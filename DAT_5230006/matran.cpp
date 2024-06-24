@@ -37,7 +37,7 @@ double trungbinhcong(int matrix[MAX][MAX], int n ){
     return count == 0 ? 0 : (double)sum / count;
 }
 
-// yeu cau 2 
+// yeu cau 2: kiem tra xem ma tran A có là ma tran tam giac khong
 bool laTamGiacTren(int matrix[MAX][MAX], int n ){
     for (int i = 1; i < n; ++i) {
         for (int j = 0; j < i; ++j) {
@@ -49,7 +49,7 @@ bool laTamGiacTren(int matrix[MAX][MAX], int n ){
     return true;
 }
 
-// yeu cau 3 ma tran doo xung 
+// yeu cau 3 ma tran doi xung ko
 bool laMaTranDoiXung(int matrix[MAX][MAX], int n ){
     for (int i = 0; i < n; ++i) {
         for (int j = 0; j < i; ++j) {
@@ -60,7 +60,7 @@ bool laMaTranDoiXung(int matrix[MAX][MAX], int n ){
     }
     return true;
 }
-// yeu cau 4
+// yeu cau 4 tinh tong tung hang cho biet hang nào tong lon nhat
 void tinhTongTheoHang( int matrix[MAX][MAX], int n, int** rowSums, int* maxRowIndex) {
     *rowSums = (int*)malloc(n * sizeof(int));
     int maxSum = -1;
