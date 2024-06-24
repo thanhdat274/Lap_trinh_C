@@ -1,0 +1,168 @@
+#include "stdio.h"
+#include "stdlib.h"
+#include"string.h"
+typedef struct{
+	char MaVN[10], HoTen[30], PhongBan[40];
+	float HSL, Luong;
+} NhanVien;
+void Nhap (char fname[], int &n, NhanVien *&nv) {
+	FILE *f;
+	f = fopen(fname, "r");
+	fscanf (f, "%d\n", &n);
+	nv = (NhanVien*) malloc(sizeof(NhanVien)*(n+1));
+	for(int i = 0; i < n; i++) {
+		fgets(nv[i].MaVN, 10, f);
+		nv[i].MaVN[strlen(nv[i].MaVN)-1]='\0';
+		fgets(nv[i].HoTen, 30, f);
+		nv[i].HoTen[strlen(nv[i].HoTen)-1]='\0';
+		fgets(nv[i].PhongBan, 40, f);
+		nv[i].PhongBan[strlen(nv[i].PhongBan)-1]='\0';
+		fscanf(f,"%f\n", &nv[i].HSL);
+	}
+	fclose(f);
+}
+void TinhLuong( float LCB, NhanVien &nv) {
+	nv.Luong = nv.HSL*LCB;
+}
+void SapXep(int n, NhanVien *nv) {
+	for(int i=0;i<n-1;i++)
+		for(int j=i+1;j<n;j++)
+			if(nv[i].Luong<nv[j].Luong)
+			{
+				NhanVien t=nv[i];
+				nv[i]=nv[j];
+				nv[j]=t;
+			}
+}
+void In(int n, NhanVien nv[]){
+	printf("Tong so nhan vien: %d \n\n",n);
+	for(int i = 0; i < n; i++) {
+		printf("STT: %d\n", i+1);
+		printf("MaNV: %s\n",nv[i].MaVN);
+		printf("Ho Ten: %s\n",nv[i].HoTen);
+		printf("Phong Ban: %s\n",nv[i].PhongBan);
+		printf("He so luong: %0.2f\n",nv[i].HSL);
+		printf("Luong: %0.2f\n\n", nv[i].Luong);
+	}
+}
+void TinhLuongTB(int n, NhanVien *nv) {
+	double s[4];
+	int d[4];
+	puts("Luong trung binh cua phong ban la:");
+	for(int i=0;i<4;i++)
+	{	
+		s[i]=0;d[i]=0;
+		for(int j=0;j<n;j++)
+		{
+			if(strcmpi(nv[j].PhongBan,"HCTH")==0){
+				s[0]+=nv[j].Luong;d[0]++;
+			}
+			if(strcmpi(nv[j].PhongBan,"TCKT")==0){
+				s[1]+=nv[j].Luong;d[1]++;
+			}
+			if(strcmpi(nv[j].PhongBan,"KT")==0){
+				s[2]+=nv[j].Luong;d[2]++;
+			}
+			if(strcmpi(nv[j].PhongBan,"BaoVe")==0){
+				s[3]+=nv[j].Luong;d[3]++;
+			}	
+		}
+		switch(i+1) {
+			case 1:{
+				printf("HCTH: ");
+				if(d[i]){
+					printf("%.2lf\n",s[i]/d[i]);
+				}
+				else printf("0\n");
+				break;
+			}
+			case 2:{
+				printf("TCKT:");
+				if(d[i]){
+					printf("%.2lf\n",s[i]/d[i]);
+				}
+				else printf("0\n");
+				break;
+			}
+			case 3:{
+				printf("KT: ");
+				if(d[i]){
+					printf("%.2lf\n",s[i]/d[i]);
+				}
+				else printf("0\n");
+				break;
+			}
+			case 4:{
+				printf("BaoVe: ");
+				if(d[i]){
+					printf("%.2lf\n",s[i]/d[i]);
+				}
+				else printf("0\n");
+				break;
+			}
+		}
+		
+	}
+	printf("\n");
+}
+void GhiTep( char fname[], int n, NhanVien nv[]) {
+	FILE *f;
+	f = fopen(fname, "r");
+	if(f != NULL){
+		printf("Tep du lieu %s da ton tai.\n",fname);
+		int answer;
+		printf("Ban co muon ghi de tep khong (0.No 1.Yes): ");
+		scanf("%d", &answer);
+		if(answer == 1) {
+			f = fopen(fname, "w");	
+			printf("===>>>Tep du lieu %s da bi ghi de\n", fname);
+		}
+		else {
+			printf("===>>>Tep du lieu %s khong bi ghi de\n", fname);
+		}
+	}
+	else {
+		f = fopen(fname, "w");
+		printf("===>>>Ghi tep du lieu %s thanh cong\n", fname);
+	}
+	fprintf(f,"%d\n",n);
+	for(int i = 0; i < n; i++) {
+		fprintf(f,"%s\n",nv[i].MaVN);
+		fprintf(f,"%s\n",nv[i].HoTen);
+		fprintf(f,"%s\n",nv[i].PhongBan);
+		fprintf(f,"%0.2f\n",nv[i].HSL);
+		fprintf(f,"%0.2f\n", nv[i].Luong);
+	}
+	fclose(f);
+}
+int main() {
+	FILE *f;
+	NhanVien *nv;
+	int n;
+	float LCB;
+	char fname[50];
+	printf("Nhap ten tep chua du lieu: "); // input.txt
+	fflush(stdin);
+	gets(fname);
+	f=fopen(fname, "r");
+	if (f == NULL) {
+		printf("Tep chua du lieu khong ton tai. Vui long kiem tra lai!!!");
+		return 0;
+	} 
+	else {
+		Nhap(fname,n,nv);
+		printf("Nhap he luong can ban: ");
+		scanf("%f", &LCB);
+		for(int i = 0; i < n; i++) {
+			TinhLuong(LCB,nv[i]);
+		}
+		SapXep(n,nv);
+		In(n, nv);
+		TinhLuongTB(n ,nv);
+		printf("Nhap ten tep ghi du lieu: ");
+		fflush(stdin);
+		gets(fname);
+		GhiTep(fname, n,nv);
+	}
+}
+

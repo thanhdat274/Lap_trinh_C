@@ -1,0 +1,11 @@
+10
+NMBach HaNoi A
+DVDuy NinhBinh A
+NTDuy SonTay B
+NTHuong HaNoi B
+NTDat HaNoi C
+MVDat Hue C
+NVDuong HaNoi C
+NTNQuy HaNam D
+NMAnh HaGiang D
+VVManh NamDinh E
